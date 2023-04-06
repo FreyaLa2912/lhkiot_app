@@ -1,0 +1,49 @@
+{
+  "translation": {
+    "welcome": "Chào mừng đến",
+    "userName": "Tài khoản",
+    "userPassword": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu mới",
+    "version": "Mã phiên bản",
+    "company": "Công ty",
+    "sign_in": "Đăng nhập",
+    "sign_out": "Đăng xuất",
+    "save": "Lưu",
+    "userName_required": "Tài khoản không được để trống !",
+    "userPassword_required": "Mật khẩu không được để trống !",
+    "newPassword_required": "Mật khẩu mới không được để trống !",
+    "confirmPassword_required": "Xác nhận mật khẩu mới không được để trống !",
+    "confirmPassword_notmatched": "Mật khẩu nhập lại không đúng !",
+    "companyName": "Tên công ty",
+    "rootUrl": "URL",
+    "companyName_required": "Tên công ty không được để trống !",
+    "rootUrl_required": "Url không được để trống !",
+    "account_is_logged_in_some_where": "Tài khoản đã được đăng nhập nơi khác !",
+
+    "alert_title_success": "Thành công",
+    "alert_title_warning": "Cảnh báo",
+    "alert_title_error": "Lỗi",
+
+    "general.success": "Thành công",
+    "general.system_error": "Lỗi hệ thống !",
+
+    "login.account_password_invalid": "Tài khoản hoặc mật khẩu không đúng !",
+
+    "menu.ChangePassword": "Đổi mật khẩu",
+    "menu.MaterialReceiving": "Nhận liệu",
+    "menu.MaterialPutAway": "Chuyển liệu vào bin",
+    "menu.MaterialPicking": "Lấy liệu từ bin",
+    "menu.MaterialShipToNG": "Chuyển liệu NG",
+    "menu.FGReceiving": "Nhận thành phẩm",
+    "menu.FGPutAway": "Chuyển thành phẩm vào bin",
+    "menu.FGPackingLot": "Đóng gói thành phẩm",
+    "menu.MappingBin": "Đăng ký bin",
+    "menu.SplitLot": "Chia lot",
+    "menu.MergeLot": "Nhập lot",
+
+    "menu.BanHang": "Bán hàng",
+    "user.password_invalid": "Mật khẩu không hợp lệ !",
+    "user.password_changed": "Mật khẩu đã được thay đổi !"
+  }
+}

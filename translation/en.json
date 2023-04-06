@@ -1,0 +1,49 @@
+{
+  "translation": {
+    "welcome": "Welcome to",
+    "userName": "User",
+    "userPassword": "Password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "version": "Version",
+    "company": "Company",
+    "sign_in": "Sign in",
+    "sign_out": "Sign out",
+    "save": "Save",
+    "userName_required": "Username is required !",
+    "userPassword_required": "Password is required !",
+    "newPassword_required": "New password is required !",
+    "confirmPassword_required": "Confirm password is required !",
+    "confirmPassword_notmatched": "Confirm password is not matched !",
+    "companyName": "Company Name",
+    "rootUrl": "URL",
+    "companyName_required": "Company Name is required !",
+    "rootUrl_required": "Url is required !",
+    "account_is_logged_in_some_where": "Your account is logged in some where !",
+
+    "alert_title_success": "Success",
+    "alert_title_warning": "Warning",
+    "alert_title_error": "Error",
+
+    "general.success": "Successfully !",
+    "general.system_error": "System error !",
+
+    "login.account_password_invalid": "Username or Password is invalid !",
+
+    "menu.ChangePassword": "Change password",
+    "menu.MaterialReceiving": "Material receiving",
+    "menu.MaterialPutAway": "Material put away",
+    "menu.MaterialPicking": "Material picking",
+    "menu.MaterialShipToNG": "Material ship to NG",
+    "menu.FGReceiving": "FG receiving",
+    "menu.FGPutAway": "FG put away",
+    "menu.FGPackingLot": "FG packing",
+    "menu.MappingBin": "Mapping bin",
+    "menu.SplitLot": "Split lot",
+    "menu.MergeLot": "Merge lot",
+    "menu.BanHang": "Bán hàng",
+
+    "user.password_invalid": "Invalid password !",
+    "user.password_changed": "Password has been changed !"
+  }
+}

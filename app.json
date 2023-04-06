@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "owner": "evilhero",
+    "name": "SoLuM MES",
+    "slug": "solum-mes-react-native",
+    "privacy": "public",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/imgs/white-soluM_Logo.png",
+    "splash": {
+      "image": "./assets/flash_screen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/713c8e42-c887-4b07-954a-2ea3226a5053"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "MES for SoLuM company, made by Nguyễn Thanh Nam",
+    "extra": {},
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "android": {
+      "package": "com.evilhero.solumapp",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/imgs/white-soluM_Logo.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": ["android.permission.CAMERA"]
+    }
+  }
+}
