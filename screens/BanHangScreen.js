@@ -49,6 +49,7 @@ export default function BanHangScreen_v2({ navigation }) {
   const [opacity, setOpacity] = useState(new Animated.Value(0));
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
+  
   const fetchData = async () => {
     setDataSource({ ...dataSource, isLoading: true });
 
