@@ -357,17 +357,19 @@ export default function BanHangScreen_v2({ navigation }) {
 
   
   const handleAddToCart = () => {
-    const { MaHang, MaDonViTinh, GiaBan, SoLuong, ThanhTien, TepHinh, DonViTinhGiaBan } = selectedProduct;
+    const { MaHang, TenHang, MaDonViTinh, GiaBan, SoLuong, ThanhTien, TepHinh, DonViTinhGiaBan , TenDonViTinh } = selectedProduct;
     setCart((item) => [
       ...item,
       {
         MaHang,
+        TenHang,
         MaDonViTinh,
         GiaBan,
         SoLuong,
         ThanhTien,
         TepHinh,
         DonViTinhGiaBan,
+        TenDonViTinh
       },
     ]);
     handleClosePicker();
