@@ -353,6 +353,8 @@ export default function BanHangScreen_v2({ navigation }) {
     </Animated.View>
   );
 
+
+  
   const handleAddToCart = () => {
     const { MaHang, MaDonViTinh, GiaBan, SoLuong, ThanhTien, TepHinh, DonViTinhGiaBan } = selectedProduct;
     setCart((item) => [
@@ -374,29 +376,36 @@ export default function BanHangScreen_v2({ navigation }) {
   }, [cart]);
   const dispatchSetCart = cartStore((state) => state.dispatchSetCart);
 
-  const handleFinishOrder = async () => {
-    //dispatchSetCart(cart);
-    //navigation.navigate('KetThucDonHang');
 
-    const data = {
-      HinhThucThanhToan: 63816302822834,
-      DaThanhToan: true,
-      ChiTiet: cart.map((x) => ({
-        MaHang: x.MaHang,
-        MaDonViTinh: x.MaDonViTinh,
-        GiaBan: x.GiaBan,
-        SoLuong: x.SoLuong,
-        ThanhTien: x.ThanhTien,
-      })),
-    };
-    const { ResponseMessage } = await banHangService.createBanHang(data);
-    if (ResponseMessage == 'general.success') {
-      showToast('Bán hàng thành công');
-      setCart([]);
-      dispatchSetCart([]);
-    } else {
-      showToast('Lỗi khi bán hàng');
-    }
+
+  //hàm click hoàn tất đơ nhàng
+  const handleFinishOrder = async () => {
+
+    //chuyển sang trang KetThucDonHang
+    dispatchSetCart(cart);//gán giỏ hàng vào store
+    navigation.navigate('KetThucDonHang');
+
+
+    //gọi api tạo bán hàng, copy bỏ qua bên trang KetThucDonHang,
+    // const data = {
+    //   HinhThucThanhToan: 63816302822834,
+    //   DaThanhToan: true,
+    //   ChiTiet: cart.map((x) => ({
+    //     MaHang: x.MaHang,
+    //     MaDonViTinh: x.MaDonViTinh,
+    //     GiaBan: x.GiaBan,
+    //     SoLuong: x.SoLuong,
+    //     ThanhTien: x.ThanhTien,
+    //   })),
+    // };
+    // const { ResponseMessage } = await banHangService.createBanHang(data);
+    // if (ResponseMessage == 'general.success') {
+    //   showToast('Bán hàng thành công');
+    //   setCart([]);
+    //   dispatchSetCart([]);
+    // } else {
+    //   showToast('Lỗi khi bán hàng');
+    // }
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>

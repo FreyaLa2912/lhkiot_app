@@ -76,12 +76,12 @@ export default (props) => {
     return (
       <NavigationContainer>
         <GalioProvider theme={argonTheme}>
-          <SafeAreaView flex>
+          <Block flex>
             <AuthProvider>
               <LandingStack />
               <Toast />
             </AuthProvider>
-          </SafeAreaView>
+          </Block>
         </GalioProvider>
       </NavigationContainer>
     );
