@@ -249,10 +249,32 @@ export default function KetThucDonHangScreen({ navigation }) {
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: 30 }}>
-                <Text style={{ fontSize: 20 }}>Đơn vị tính</Text>
+              <View style={{ marginTop: 30,flexDirection:"row",alignItems:"center" }}>
+                <Text style={{ fontSize: 20,marginRight:15 }}>Đơn vị tính</Text>
                 <View>
-                  <Picker
+                <SelectDropdown
+                data={selectedProduct.DonViTinhGiaBan}
+                buttonStyle={{ backgroundColor: '#D1D5DB' }}
+                defaultValue={selectedProduct?.MaDonViTinh}
+                defaultButtonText={`${selectedProduct?.TenDonViTinh} - ${numbericFormat(selectedProduct?.GiaBan)}`}
+                onSelect={(selectedItem, index) => {
+                  const { GiaBan, TenDonViTinh, MaDonViTinh } = selectedItem;
+                  setSelectedProduct((item) => ({
+                    ...item,
+                    GiaBan,
+                    TenDonViTinh,
+                    MaDonViTinh,
+                    ThanhTien: GiaBan * item.SoLuong,
+                  }));
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return `${selectedItem.TenDonViTinh} - ${numbericFormat(selectedItem.GiaBan)}`;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return `${item.TenDonViTinh} - ${numbericFormat(item.GiaBan)}`;
+                }}
+              />
+                  {/* <Picker
                     mode="dropdown"
                     selectedValue={selectedProduct.MaDonViTinh}
                     style={{ height: 50 }}
@@ -274,7 +296,7 @@ export default function KetThucDonHangScreen({ navigation }) {
                         value={item.MaDonViTinh}
                       />
                     ))}
-                  </Picker>
+                  </Picker> */}
                 </View>
               </View>
             </View>

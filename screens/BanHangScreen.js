@@ -16,6 +16,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { hangHoaService, banHangService } from '@services';
@@ -34,17 +35,19 @@ import SelectDropdown from 'react-native-select-dropdown';
 
 const window = Dimensions.get('window');
 export default function BanHangScreen_v2({ navigation }) {
+  const [searchKeyword, setSearchKeyword] = useState('');
   const { rootUrl } = connectionStore.getState().apiConnection;
   const [dataSource, setDataSource] = useState({
     isLoading: false,
     data: [],
     totalRow: 0,
     page: 1,
-    pageSize: 10,
+    pageSize: 0,
     searchData: {
       keyWord: '',
       showActive: true,
     },
+    loadedItems: 8,
   });
   const sheetRef = useRef(null);
   const [showPicker, setShowPicker] = useState(false);
@@ -57,7 +60,7 @@ export default function BanHangScreen_v2({ navigation }) {
     const params = {
       page: dataSource.page,
       pageSize: dataSource.pageSize,
-      keyWord: dataSource.searchData.keyWord,
+      keyWord: searchKeyword,
       showActive: dataSource.searchData.showActive,
     };
     const res = await hangHoaService.getHangHoa(params);
@@ -86,10 +89,24 @@ export default function BanHangScreen_v2({ navigation }) {
       });
       showToast('Không lấy được danh sách sản phẩm');
     }
+    const getConfig = async () => {
+      try {
+        const response = await hangHoaService.getHangHoa(params);
+        const { data: { pageSize } } = response;
+        setDataSource((prevDataSource) => ({
+          ...prevDataSource,
+          pageSize,
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  
+  }, [searchKeyword]);
   const showToast = (text1) => {
     Toast.show({
       type: 'info',
@@ -106,6 +123,24 @@ export default function BanHangScreen_v2({ navigation }) {
         }}
       />
     );
+  };
+  const handleLoadMore = () => {
+    // Update the loadedItems count to load more items
+    setDataSource({
+      ...dataSource,
+      loadedItems: dataSource.loadedItems + 8,
+    });
+  };
+  // Load more items
+  const renderLoadMoreButton = () => {
+    if (dataSource.loadedItems < dataSource.data.length) {
+      return (
+        <TouchableOpacity onPress={handleLoadMore} style={styles.loadMoreButton}>
+          <Text style={styles.loadMoreText}>Xem thêm</Text>
+        </TouchableOpacity>
+      );
+    }
+    return null;
   };
 
   const handleClickIconAdd = (item) => {
@@ -125,7 +160,7 @@ export default function BanHangScreen_v2({ navigation }) {
       <View style={{ width: '100%' }}>
         <View
           style={{
-            borderColor: '#E4E8EC',
+            borderColor: '#96f29e',
             borderWidth: 1,
             borderRadius: 5,
             display: 'flex',
@@ -258,6 +293,7 @@ export default function BanHangScreen_v2({ navigation }) {
                   <SelectDropdown
                     data={selectedProduct?.DonViTinhGiaBan}
                     defaultValue={selectedProduct?.MaDonViTinh}
+                    style={{}}
                     defaultButtonText={selectedProduct?.TenDonViTinh}
                     onSelect={(selectedItem, index) => {
                       const { GiaBan, TenDonViTinh, MaDonViTinh } = selectedItem;
@@ -269,14 +305,15 @@ export default function BanHangScreen_v2({ navigation }) {
                         ThanhTien: GiaBan * item.SoLuong,
                       }));
                     }}
+                    
                     buttonTextAfterSelection={(selectedItem, index) => {
                       return selectedItem.TenDonViTinh;
                     }}
                     rowTextForSelection={(item, index) => {
                       return item.TenDonViTinh;
                     }}
-                  />
-                </View>
+                  />              
+                </View>          
               </View>
             </View>
             <View style={{ height: '20%', justifyContent: 'space-between' }}>
@@ -386,13 +423,28 @@ export default function BanHangScreen_v2({ navigation }) {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBox}>
+  <TextInput
+    style={styles.searchInput}
+    placeholder="Tìm kiếm sản phẩm"
+    value={searchKeyword}
+    onChangeText={(text) => setSearchKeyword(text)}
+  />
+     <Icon name="search" style={styles.searchIcon} onPress={() => fetchData()} />
+
+        </View>
+</View>
       <View style={styles.container}>
         <FlatList
-          data={dataSource.data}
+          data={dataSource.data.slice(0, dataSource.loadedItems)}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           enableEmptySections={true}
           renderItem={ItemView}
+          ListFooterComponent={renderLoadMoreButton} // Render the "Load more" button at the end of the list
+        refreshing={dataSource.isLoading}
+        onRefresh={fetchData}
         />
         {cart.length > 0 && (
           <>
@@ -454,6 +506,48 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
   },
+  loadMoreButton: {
+    backgroundColor: '#8BC34A',
+    borderRadius: 25,
+    width: 200,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  loadMoreText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  searchContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    paddingTop: 10,
+    },
+    searchBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F2F2F2',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    height: 50,
+    width: '100%',
+    },
+    searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    paddingVertical: 10,
+    },
+    searchIcon: {
+    color: '#54de1d',
+    fontSize: 24,
+    },
 });
 
 const DismissKeyboard = ({ children }) => (

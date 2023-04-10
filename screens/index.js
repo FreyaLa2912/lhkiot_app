@@ -8,6 +8,7 @@ import BanHangScreen from './BanHangScreen';
 import MaterialPutAwayScreen from './m-wms/MaterialPutAwayScreen';
 import MaterialPickingScreen from './m-wms/MaterialPickingScreen';
 import KetThucDonHangScreen from './KetThucDonHangScreen';
+import DanhSachHoaDonScreen from './DanhSachHoaDonScreen';
 export {
   ////system
   LoginScreen,
@@ -19,4 +20,5 @@ export {
   MaterialPutAwayScreen,
   MaterialPickingScreen,
   KetThucDonHangScreen,
+  DanhSachHoaDonScreen,
 };

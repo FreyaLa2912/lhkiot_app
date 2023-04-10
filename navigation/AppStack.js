@@ -77,6 +77,7 @@ const AppStack = (props) => {
 
       drawerRenderList.push(StackWrapper('ChangePassword', changePasswordScreenId, 'ChangePassword'));
       drawerRenderList.push(StackWrapper('KetThucDonHang', 1, 'KetThucDonHang'));
+      drawerRenderList.push(StackWrapper('DanhSachHoaDon', 2, 'DanhSachHoaDon'));
 
       if (isRendered) setDrawerRender([...drawerRenderList]);
     }

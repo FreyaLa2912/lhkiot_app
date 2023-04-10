@@ -10,3 +10,14 @@ export const createBanHang = async (params) => {
     ToastAndroid.show('Lỗi bán hàng', ToastAndroid.LONG);
   }
 };
+
+export const getBanHang = async (params) => {
+  try {
+    const result = await axiosClient.get(`${ApiName}/get-all`, {
+      params,
+    });
+    return result.data;
+  } catch (error) {
+    ToastAndroid.show('Lỗi lấy danh sách hóa đơn', ToastAndroid.LONG);
+  }
+};

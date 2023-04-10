@@ -6,6 +6,7 @@ import MaterialPutAway from './m-wms/MaterialPutAway';
 import MaterialPicking from './m-wms/MaterialPicking';
 import BanHang from './BanHang';
 import KetThucDonHang from './KetThucDonHang';
+import DanhSachHoaDon from './DanhSachHoaDon';
 export {
   ////system
   ChangePassword,
@@ -15,4 +16,5 @@ export {
   MaterialPicking,
   BanHang,
   KetThucDonHang,
+  DanhSachHoaDon,
 };
