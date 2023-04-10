@@ -330,6 +330,7 @@ export default function BanHangScreen_v2({ navigation }) {
                     borderRadius: 50,
                     justifyContent: 'center',
                   }}
+                  onPress={handleBillList}
                 >
                   <Text style={{ color: '#ef1724', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
                     Thanh toán
@@ -421,6 +422,11 @@ export default function BanHangScreen_v2({ navigation }) {
     setCart([]);
     navigation.navigate('KetThucDonHang');
   };
+
+  const handleBillList = async () => {
+    navigation.navigate('DanhSachHoaDon');
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchContainer}>

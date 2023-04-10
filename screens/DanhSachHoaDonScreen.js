@@ -16,6 +16,8 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import { numbericFormat } from '@utils';
+
 import { banHangService } from '@services';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -41,10 +43,10 @@ const DanhSachHoaDonScreen = () => {
   const renderItem = ({ item }) => {
     return (
       <View  style={styles.item}>
-        <Text style={styles.title}>{item.MaBanHang}</Text>
-        <Text>{item.TenHinhThucThanhToan}</Text>
-        <Text>{item.TongTien}</Text>
-        <Text>{item.createdDate}</Text>
+        <Text style={styles.title}>{'Người tạo: ' + item.createdName}</Text>
+        <Text>{'Hình thức thanh toán: '+item.TenHinhThucThanhToan}</Text>
+        <Text>{'Tổng tiền: '+numbericFormat(item.TongTien) +'đ'}</Text>
+        <Text>{'Thời gian tạo: '+item.createdDate}</Text>
       </View>
     );
   };
