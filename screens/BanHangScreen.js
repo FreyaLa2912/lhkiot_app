@@ -12,23 +12,25 @@ import {
   Pressable,
   Platform,
   Alert,
+  FlatList,
+  StyleSheet,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList } from 'react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { hangHoaService, banHangService } from '@services';
 import connectionStore from '@stores/system/connectionStore';
-import { ToastAndroid } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useRef } from 'react';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Picker } from '@react-native-picker/picker';
 import { numbericFormat } from '@utils';
 import cartStore from '@stores/system/cartStore';
 import Toast from 'react-native-toast-message';
+import 'react-native-get-random-values';
+
+import { v4 as uuidv4 } from 'uuid';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const window = Dimensions.get('window');
 export default function BanHangScreen_v2({ navigation }) {
@@ -44,12 +46,11 @@ export default function BanHangScreen_v2({ navigation }) {
       showActive: true,
     },
   });
-  const sheetRef = React.useRef(null);
+  const sheetRef = useRef(null);
   const [showPicker, setShowPicker] = useState(false);
   const [opacity, setOpacity] = useState(new Animated.Value(0));
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
-  
   const fetchData = async () => {
     setDataSource({ ...dataSource, isLoading: true });
 
@@ -109,7 +110,8 @@ export default function BanHangScreen_v2({ navigation }) {
 
   const handleClickIconAdd = (item) => {
     sheetRef.current.snapTo(2);
-    setSelectedProduct({ ...item, SoLuong: 1, ThanhTien: item.GiaBan });
+    const id = uuidv4();
+    setSelectedProduct({ ...item, SoLuong: 1, ThanhTien: item.GiaBan, id });
     setShowPicker(true);
     Animated.timing(opacity, {
       toValue: 0.7,
@@ -133,13 +135,13 @@ export default function BanHangScreen_v2({ navigation }) {
           <View style={{ width: '20%' }}>
             <Image style={{ width: '100%', height: 90 }} source={{ uri: item.TepHinh }} />
           </View>
-          <View style={{ width: '60%', paddingVertical: 10, paddingLeft: 20 }}>
-            <Text>{item.TenHang}</Text>
+          <View style={{ width: '65%', paddingVertical: 10, paddingLeft: 20 }}>
+            <Text numberOfLines={2}>{item.TenHang}</Text>
             <Text style={{ color: '#e53b32', fontWeight: 'bold' }}>{numbericFormat(item.GiaBan)}</Text>
             <Text style={{ color: '#707070' }}>{item.TenDonViTinh}</Text>
           </View>
-          <View style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon onPress={() => handleClickIconAdd(item)} name="plus-circle" color={'#e53b32'} size={25}></Icon>
+          <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon onPress={() => handleClickIconAdd(item)} name="plus-circle" color={'#e53b32'} size={35}></Icon>
           </View>
         </View>
       </View>
@@ -192,7 +194,7 @@ export default function BanHangScreen_v2({ navigation }) {
                   <Image style={{ width: '100%', height: 90 }} source={{ uri: selectedProduct.TepHinh }} />
                 </View>
                 <View style={{ width: '80%', paddingVertical: 10, paddingLeft: 20 }}>
-                  <Text>{selectedProduct.TenHang}</Text>
+                  <Text numberOfLines={3}>{selectedProduct.TenHang}</Text>
                   <Text style={{ color: '#e53b32', fontWeight: 'bold' }}>{numbericFormat(selectedProduct.GiaBan)}</Text>
                   <Text style={{ color: '#707070' }}>{selectedProduct.TenDonViTinh}</Text>
                 </View>
@@ -250,15 +252,15 @@ export default function BanHangScreen_v2({ navigation }) {
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: 30 }}>
-                <Text style={{ fontSize: 20 }}>Đơn vị tính</Text>
+              <View style={{ marginTop: 30, flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, marginRight: 20 }}>Đơn vị tính</Text>
                 <View>
-                  <Picker
-                    mode="dropdown"
-                    selectedValue={selectedProduct.MaDonViTinh}
-                    style={{ height: 50 }}
-                    onValueChange={(itemValue, itemIndex) => {
-                      const { GiaBan, TenDonViTinh, MaDonViTinh } = selectedProduct.DonViTinhGiaBan[itemIndex];
+                  <SelectDropdown
+                    data={selectedProduct?.DonViTinhGiaBan}
+                    defaultValue={selectedProduct?.MaDonViTinh}
+                    defaultButtonText={selectedProduct?.TenDonViTinh}
+                    onSelect={(selectedItem, index) => {
+                      const { GiaBan, TenDonViTinh, MaDonViTinh } = selectedItem;
                       setSelectedProduct((item) => ({
                         ...item,
                         GiaBan,
@@ -267,15 +269,13 @@ export default function BanHangScreen_v2({ navigation }) {
                         ThanhTien: GiaBan * item.SoLuong,
                       }));
                     }}
-                  >
-                    {selectedProduct.DonViTinhGiaBan.map((item) => (
-                      <Picker.Item
-                        key={item.MaDonViTinh}
-                        label={`${item.TenDonViTinh} - ${numbericFormat(item.GiaBan)}`}
-                        value={item.MaDonViTinh}
-                      />
-                    ))}
-                  </Picker>
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      return selectedItem.TenDonViTinh;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      return item.TenDonViTinh;
+                    }}
+                  />
                 </View>
               </View>
             </View>
@@ -354,23 +354,23 @@ export default function BanHangScreen_v2({ navigation }) {
     </Animated.View>
   );
 
-
-  
   const handleAddToCart = () => {
-    const { MaHang, TenHang, MaDonViTinh, GiaBan, SoLuong, ThanhTien, TepHinh, DonViTinhGiaBan , TenDonViTinh } = selectedProduct;
+    const { MaHang, MaDonViTinh, GiaBan, SoLuong, ThanhTien, TepHinh, DonViTinhGiaBan, TenHang, TenDonViTinh, id } =
+      selectedProduct;
     setCart((item) => [
-      ...item,
       {
         MaHang,
-        TenHang,
         MaDonViTinh,
         GiaBan,
         SoLuong,
         ThanhTien,
         TepHinh,
         DonViTinhGiaBan,
-        TenDonViTinh
+        TenHang,
+        TenDonViTinh,
+        id,
       },
+      ...item,
     ]);
     handleClosePicker();
   };
@@ -379,36 +379,10 @@ export default function BanHangScreen_v2({ navigation }) {
   }, [cart]);
   const dispatchSetCart = cartStore((state) => state.dispatchSetCart);
 
-
-
-  //hàm click hoàn tất đơ nhàng
   const handleFinishOrder = async () => {
-
-    //chuyển sang trang KetThucDonHang
-    dispatchSetCart(cart);//gán giỏ hàng vào store
+    dispatchSetCart(cart);
+    setCart([]);
     navigation.navigate('KetThucDonHang');
-
-
-    //gọi api tạo bán hàng, copy bỏ qua bên trang KetThucDonHang,
-    // const data = {
-    //   HinhThucThanhToan: 63816302822834,
-    //   DaThanhToan: true,
-    //   ChiTiet: cart.map((x) => ({
-    //     MaHang: x.MaHang,
-    //     MaDonViTinh: x.MaDonViTinh,
-    //     GiaBan: x.GiaBan,
-    //     SoLuong: x.SoLuong,
-    //     ThanhTien: x.ThanhTien,
-    //   })),
-    // };
-    // const { ResponseMessage } = await banHangService.createBanHang(data);
-    // if (ResponseMessage == 'general.success') {
-    //   showToast('Bán hàng thành công');
-    //   setCart([]);
-    //   dispatchSetCart([]);
-    // } else {
-    //   showToast('Lỗi khi bán hàng');
-    // }
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>

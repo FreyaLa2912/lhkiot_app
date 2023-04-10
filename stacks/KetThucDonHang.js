@@ -18,7 +18,7 @@ const KetThucDonHang = (props) => {
   useEffect(() => {
     i18n.changeLanguage(language);
 
-    setTitle('Đơn đặt hàng');
+    setTitle('Đơn bán hàng');
 
     return () => {};
   }, [language]);
